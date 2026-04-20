@@ -1,14 +1,12 @@
 import { saveTranslationData } from "./persistence";
 import { showTaskManager, updateTaskInList } from "./task-manager";
 import type { TranslationTaskData } from "../../types";
-import { getPref } from "../../utils/prefs";
+import { getPref, setPref } from "../../utils/prefs";
 import { showConfirmationDialog } from "./confirm-dialog";
 import { translatePDF } from "./translate";
-import { TranslationTaskMonitor } from "./task-monitor";
 import { getString } from "../../utils/locale";
 import { showDialog } from "../../utils/dialog";
 import { Language } from "../language/types";
-import { report } from "../../utils/report";
 
 const ATTR_TAG = "BabelDOC_translated";
 
@@ -25,37 +23,15 @@ export function isAttachmentInTaskList(attachmentId: number): boolean {
 }
 
 export async function addTasksToQueue(ids?: number[]) {
-  // Check if using local translation
-  const useLocalTranslation = getPref("useLocalTranslation") as boolean;
+  setPref("useLocalTranslation", true);
 
-  if (!useLocalTranslation) {
-    // Only check authkey for remote translation
-    const authkey = getPref("authkey");
-    if (!authkey) {
-      showDialog({
-        title: getString("pref-test-failed-description"),
-      });
-      return;
-    }
-    const result = await addon.api.checkAuthKey({
-      apiKey: authkey,
+  const customApiKey = getPref("customApiKey") as string;
+  if (!customApiKey) {
+    showDialog({
+      title: "Local Translation Error",
+      message: "Please configure your custom API key in settings.",
     });
-    if (!result) {
-      showDialog({
-        title: getString("pref-test-failed-description"),
-      });
-      return;
-    }
-  } else {
-    // For local translation, check API key
-    const customApiKey = getPref("customApiKey") as string;
-    if (!customApiKey) {
-      showDialog({
-        title: "Local Translation Error",
-        message: "Please configure your API key in settings",
-      });
-      return;
-    }
+    return;
   }
 
   // 根据是否传入 ids 参数选择不同的获取任务方式
@@ -79,18 +55,6 @@ export async function addTasksToQueue(ids?: number[]) {
     return;
   }
 
-  report("zotero_plugin_translate", [
-    {
-      name: "zotero_plugin_translate",
-      params: {
-        trigger: "right_menu",
-        translation_service:
-          confirmResult.data?.translateModel || translateModel,
-        translate_mode: confirmResult.data?.translateMode || translateMode,
-        target_language: confirmResult.data?.targetLanguage || targetLanguage,
-      },
-    },
-  ]);
   tasksToQueue.forEach((task) => {
     task.translateMode = confirmResult.data?.translateMode || translateMode;
     task.translateModel = confirmResult.data?.translateModel || translateModel;
@@ -330,23 +294,20 @@ async function processNextItem() {
   );
 
   try {
-    // 如果任务已经有pdfId，说明是程序重启后恢复的任务，并且已经创建了翻译任务
     if (taskData.pdfId) {
       ztoolkit.log(
-        `恢复已有pdfId(${taskData.pdfId})的任务: ${taskData.attachmentFilename}，直接进入监控阶段`,
+        `Ignoring legacy remote pdfId ${taskData.pdfId} and restarting locally: ${taskData.attachmentFilename}`,
       );
+      delete taskData.pdfId;
       updateTaskInList(taskData.attachmentId, {
-        status: "translating",
+        pdfId: "",
       });
-      // 直接启动监控任务
-      TranslationTaskMonitor.addTask(taskData.pdfId, taskData, parentItem);
-    } else {
-      // 常规流程 - 从上传开始
-      await translatePDF(taskData, parentItem);
-      ztoolkit.log(
-        `Initiated processing for: ${taskData.attachmentFilename}. Moving to next queue item.`,
-      );
     }
+
+    await translatePDF(taskData, parentItem);
+    ztoolkit.log(
+      `Initiated processing for: ${taskData.attachmentFilename}. Moving to next queue item.`,
+    );
   } catch (error: any) {
     ztoolkit.log(
       `ERROR: Failed to initiate translation for ${taskData.attachmentFilename}:`,

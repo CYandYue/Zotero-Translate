@@ -20,7 +20,7 @@ import {
 } from "./modules/translate/persistence";
 import { showTaskManager } from "./modules/translate/task-manager";
 import { initTasks } from "./modules/translate/store";
-import { getPref } from "./utils/prefs";
+import { getPref, migrateLegacyPrefs } from "./utils/prefs";
 
 async function onStartup() {
   await Promise.all([
@@ -30,6 +30,8 @@ async function onStartup() {
   ]);
 
   initLocale();
+
+  migrateLegacyPrefs();
 
   registerPrefs();
 

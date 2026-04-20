@@ -360,43 +360,6 @@ function buildPrefsPane() {
 }
 
 function bindPrefEvents() {
-  addon.data
-    .prefs!.window.document?.querySelector(
-      `#zotero-prefpane-${config.addonRef}-authkey`,
-    )
-    ?.addEventListener("change", (e: Event) => {
-      ztoolkit.log(e);
-      setPref("authkey", (e.target as HTMLInputElement).value);
-    });
-
-  addon.data
-    .prefs!.window.document?.querySelector(
-      `#zotero-prefpane-${config.addonRef}-test-button`,
-    )
-    ?.addEventListener("command", async (e: Event) => {
-      try {
-        const result = await addon.api.checkAuthKey({
-          apiKey: getPref("authkey"),
-        });
-        if (result) {
-          showDialog({
-            title: getString("pref-test-success"),
-          });
-        } else {
-          showDialog({
-            title: getString("pref-test-failed"),
-            message: getString("pref-test-failed-description"),
-          });
-        }
-      } catch (error) {
-        ztoolkit.log(error);
-        showDialog({
-          title: getString("pref-test-failed"),
-          message: getString("pref-test-failed-description"),
-        });
-      }
-    });
-
   // Bind custom API key input
   addon.data
     .prefs!.window.document?.querySelector(

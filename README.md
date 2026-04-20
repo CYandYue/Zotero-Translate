@@ -24,7 +24,7 @@ npm run build
 1. 打开 Zotero
 2. 工具 -> 附加组件
 3. 点击右上角齿轮图标 -> Install Add-on From File
-4. 选择编译生成的 `dist/immersive-translate.xpi` 文件
+4. 选择编译生成的 `dist/immersive-translate-local.xpi` 文件
 5. 重启 Zotero
 
 ## 环境变量配置

@@ -16,6 +16,9 @@ export default defineConfig({
 
   build: {
     assets: ["addon/**/*.*"],
+    makeManifest: {
+      enable: false,
+    },
     define: {
       ...pkg.config,
       author: pkg.author,

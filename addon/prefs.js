@@ -15,7 +15,7 @@ pref("customSystemPrompt", "");
 pref("fakeUserId", "");
 pref("enableShortcuts", true);
 pref("layoutModel", "version_3");
-pref("useLocalTranslation", false);
+pref("useLocalTranslation", true);
 pref("customProvider", "openai");
 pref("customApiKey", "");
 pref("customModel", "");

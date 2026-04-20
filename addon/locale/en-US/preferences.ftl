@@ -26,6 +26,7 @@ pref-enable-autoTranslate-description = After enabling, newly added PDF files wi
 pref-imt-site = Get your authorization key from your personal page on Immersive Translate website
 
 pref-local-translation = Local Translation (Use Your Own API)
+pref-local-translation-description = This build only uses your own API. It does not connect to the Immersive Translate remote task service and does not require an Immersive Translate auth key.
 pref-use-local-translation =
     .label = Enable local translation
 pref-use-local-translation-description = Use your own GPT/DeepSeek API for translation, no Immersive Translate membership required

@@ -1,12 +1,12 @@
 startup-begin = 插件加载中
 startup-finish = 插件已就绪
-menuitem-translate = 使用沉浸式翻译(Shift+A)
-menuView-tasks = 查看沉浸式翻译任务(Shift+T)
+menuitem-translate = 使用本地翻译(Shift+A)
+menuView-tasks = 查看本地翻译任务(Shift+T)
 pref-test-success = 测试成功
 pref-test-failed = 测试失败
 pref-test-failed-description = 请检查授权码是否正确
 
-prefs-title = 沉浸式翻译
+prefs-title = 本地翻译
 item-filed-status = 翻译状态
 
 translateMode-all = 双语模式 & 译文模式
@@ -58,7 +58,6 @@ column-attachment = 附件
 column-target-language = 目标语言
 column-translate-model = 翻译模型
 column-translate-mode = 翻译模式
-column-pdfId =  任务 ID
 column-status = 任务状态
 column-stage = 当前阶段
 column-progress = 翻译进度

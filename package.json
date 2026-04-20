@@ -1,8 +1,14 @@
 {
-  "name": "zotero-immersivetranslate",
+  "name": "zotero-immersivetranslate-local",
   "type": "module",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Zotero translation plugin with custom API support.",
+  "homepage": "https://github.com/cy/zotero-immersivetranslate-local#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cy/zotero-immersivetranslate-local.git"
+  },
+  "author": "cy",
   "keywords": [
     "zotero",
     "plugin",
@@ -10,12 +16,12 @@
     "translation"
   ],
   "config": {
-    "addonName": "Immersive Translate 沉浸式翻译",
-    "addonID": "zotero@immersivetranslate.com",
-    "addonRef": "immersivetranslate",
-    "addonInstance": "ImmersiveTranslate",
-    "prefsPrefix": "extensions.zotero.immersivetranslate",
-    "xpiName": "immersive-translate"
+    "addonName": "Immersive Translate Local 本地翻译",
+    "addonID": "zotero-immersivetranslate-local@cy.local",
+    "addonRef": "immersivetranslatelocal",
+    "addonInstance": "ImmersiveTranslateLocal",
+    "prefsPrefix": "extensions.zotero.immersivetranslatelocal",
+    "xpiName": "immersive-translate-local"
   },
   "license": "AGPL-3.0-or-later",
   "scripts": {

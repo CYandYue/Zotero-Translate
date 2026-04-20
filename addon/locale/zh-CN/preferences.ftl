@@ -32,6 +32,7 @@ pref-enable-shortcuts-description-2 = Shift + T 打开翻译任务管理器
 pref-imt-site = 在沉浸式翻译官网个人主页获取授权码
 
 pref-local-translation = 本地翻译（使用自己的 API）
+pref-local-translation-description = 此版本仅使用您自己的 API，不会连接沉浸式翻译远端任务服务，也不需要沉浸式翻译授权码。
 pref-use-local-translation =
     .label = 启用本地翻译
 pref-use-local-translation-description = 启用后将使用您自己的 GPT/DeepSeek API 进行翻译，不需要沉浸式翻译会员

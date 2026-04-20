@@ -8,7 +8,6 @@ import { Language } from "../language/types";
 import { getLanguageName } from "../language";
 import { showDialog } from "../../utils/dialog";
 import { startQueueProcessing } from "./task";
-import { APP_SITE_URL, TEST_APP_SITE_URL } from "../../utils/const";
 
 /**
  * 显示翻译任务列表的弹窗
@@ -63,11 +62,6 @@ export async function showTaskManager() {
             fixedWidth: false,
           },
           {
-            dataKey: "pdfId",
-            label: getString("column-pdfId"),
-            fixedWidth: false,
-          },
-          {
             dataKey: "status",
             label: getString("column-status"),
             fixedWidth: false,
@@ -111,7 +105,6 @@ export async function showTaskManager() {
           translateModel: getTranslateModelLabel(task.translateModel) || "",
           translateMode: getTranslateModeLabel(task.translateMode) || "",
           stage: getStageText(task.stage) || "",
-          pdfId: task.pdfId || "-",
           error: task.error || "-",
           resultAttachmentId: task.resultAttachmentId?.toString() || "",
         };
@@ -120,12 +113,7 @@ export async function showTaskManager() {
         const tasks = getSelectedTasks();
         if (tasks.length > 0) {
           const task = tasks[0];
-          if (task.pdfId) {
-            new ztoolkit.Clipboard().addText(task.pdfId, "text/unicode").copy();
-            showDialog({
-              title: getString("task-copy-success"),
-            });
-          }
+          openResultAttachment(task);
         }
         return true;
       })
@@ -138,9 +126,6 @@ export async function showTaskManager() {
     const refreshButton = win.document.querySelector(
       "#refresh",
     ) as HTMLButtonElement;
-    const copyPdfIdButton = win.document.querySelector(
-      "#copy-pdf-id",
-    ) as HTMLButtonElement;
     const cancelButton = win.document.querySelector(
       "#cancel",
     ) as HTMLButtonElement;
@@ -149,9 +134,6 @@ export async function showTaskManager() {
     ) as HTMLButtonElement;
     const retryButton = win.document.querySelector(
       "#retry",
-    ) as HTMLButtonElement;
-    const feedbackButton = win.document.querySelector(
-      "#feedback",
     ) as HTMLButtonElement;
     const clearButton = win.document.querySelector(
       "#clearQueue",
@@ -166,16 +148,7 @@ export async function showTaskManager() {
       const tasks = getSelectedTasks();
       if (tasks.length > 0) {
         const task = tasks[0];
-        if (task.resultAttachmentId) {
-          const resultAttachment = Zotero.Items.get(task.resultAttachmentId);
-          if (resultAttachment) {
-            Zotero.Reader.open(resultAttachment.id);
-          }
-        } else {
-          showDialog({
-            title: getString("task-uncomplete"),
-          });
-        }
+        openResultAttachment(task);
       } else {
         showDialog({
           title: getString("task-select-tip"),
@@ -220,40 +193,8 @@ export async function showTaskManager() {
       }
     });
 
-    feedbackButton.addEventListener("click", (ev) => {
-      const tasks = getSelectedTasks();
-      if (tasks.length > 0) {
-        const task = tasks[0];
-        if (task.pdfId && task.status !== "translating") {
-          const APP_URL =
-            addon.data.env === "development" ? TEST_APP_SITE_URL : APP_SITE_URL;
-          Zotero.launchURL(`${APP_URL}/babel-doc/${task.pdfId}?from=zotero`);
-        }
-      } else {
-        showDialog({
-          title: getString("task-select-tip"),
-        });
-      }
-    });
-
     refreshButton.addEventListener("click", (ev) => {
       refresh();
-    });
-    copyPdfIdButton.addEventListener("click", (ev) => {
-      const tasks = getSelectedTasks();
-      if (tasks.length > 0) {
-        const task = tasks[0];
-        if (task.pdfId) {
-          new ztoolkit.Clipboard().addText(task.pdfId, "text/unicode").copy();
-          showDialog({
-            title: getString("task-copy-success"),
-          });
-        }
-      } else {
-        showDialog({
-          title: getString("task-select-tip"),
-        });
-      }
     });
     cancelButton.addEventListener("click", (ev) => {
       const tasks = getSelectedTasks();
@@ -360,6 +301,20 @@ function cancelTask(task: TranslationTaskData) {
     1,
   );
   saveTranslationData();
+}
+
+function openResultAttachment(task: TranslationTaskData) {
+  if (task.resultAttachmentId) {
+    const resultAttachment = Zotero.Items.get(task.resultAttachmentId);
+    if (resultAttachment) {
+      Zotero.Reader.open(resultAttachment.id);
+      return;
+    }
+  }
+
+  showDialog({
+    title: getString("task-uncomplete"),
+  });
 }
 
 /**

@@ -3,34 +3,8 @@
 </linkset>
 <vbox onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })">
   <groupbox>
-    <label><html:h2 data-l10n-id="pref-title"></html:h2></label>
-    <hbox align="center">
-      <html:label
-        for="zotero-prefpane-__addonRef__-authkey"
-        data-l10n-id="pref-authkey"
-      ></html:label>
-      <html:input
-        type="password"
-        id="zotero-prefpane-__addonRef__-authkey"
-        preference="authkey"
-      ></html:input>
-      <button
-        id="zotero-prefpane-__addonRef__-test-button"
-        data-l10n-id="pref-test-button"
-      ></button>
-    </hbox>
-  </groupbox>
-  <groupbox>
     <label><html:h2 data-l10n-id="pref-local-translation"></html:h2></label>
-    <vbox style="margin-top: 12px">
-      <checkbox
-        id="zotero-prefpane-__addonRef__-use-local-translation"
-        native="true"
-        preference="useLocalTranslation"
-        data-l10n-id="pref-use-local-translation"
-      />
-      <p data-l10n-id="pref-use-local-translation-description" />
-    </vbox>
+    <p data-l10n-id="pref-local-translation-description" />
     <hbox align="center" style="margin-top: 12px">
       <label data-l10n-id="pref-custom-provider"></label>
       <box id="__addonRef__-custom-provider-placeholder"></box>

@@ -1,12 +1,12 @@
 startup-begin = Addon is loading
 startup-finish = Addon is ready
-menuitem-translate = Translate with ImmersiveTranslate(Shift+A)
-menuView-tasks = View Immersive translate tasks(Shift+T)
+menuitem-translate = Translate locally(Shift+A)
+menuView-tasks = View local translation tasks(Shift+T)
 pref-test-success = Test successfully
 pref-test-failed = Test failed
 pref-test-failed-description = Please check your authkey
 
-prefs-title = Immersive Translate
+prefs-title = Local Translation
 item-filed-status = Translation Status
 
 translateMode-all = Bilingual mode & Translation only
@@ -58,7 +58,6 @@ column-attachment = Attachment
 column-target-language = Target Language
 column-translate-model = Translation Model
 column-translate-mode = Translation Mode
-column-pdfId =  Task ID
 column-status = Task Status
 column-stage = Current Stage
 column-progress = Translate Progress
